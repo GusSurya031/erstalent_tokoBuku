@@ -2,7 +2,7 @@
 
 @section('container')
     <section>
-        <h1>Hello ErsTalent</h1>
-        <p>Hello World</p>
+        <p>Ini adalah halaman landing page</p>
+        <a href="">Register</a>
     </section>
 @endsection
