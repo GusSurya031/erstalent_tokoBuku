@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
@@ -9,17 +8,21 @@ use Illuminate\Http\Request;
 
 class SaleController extends Controller
 {
-    // Menampilkan daftar penjualan beserta informasi buku dan user
     public function index()
     {
-        // Mengambil semua penjualan dan melakukan eager loading pada relasi user dan book
-        $sales = Sale::with(['user', 'book.category'])->get();
-
-        // Mengirim data ke view
-        return view('sales.index', compact('sales'));
+        // Ambil semua data penjualan beserta relasi user dan book
+        $sales = Sale::with(['user', 'book', 'book.category'])->get();
+        return view('sale', compact('sales')); // Mengarah ke file sale.blade.php
     }
 
-    // Menyimpan transaksi penjualan
+
+    public function create()
+    {
+        $books = Book::all(); // Ambil semua buku
+        $users = User::all(); // Ambil semua user
+        return view('create', compact('books', 'users')); // Mengarah ke file create.blade.php
+    }
+
     public function store(Request $request)
     {
         // Validasi input
@@ -32,24 +35,23 @@ class SaleController extends Controller
         // Ambil data buku untuk menghitung total harga
         $book = Book::find($request->book_id);
 
-        // Validasi jika buku tidak ditemukan
         if (!$book) {
-            return redirect()->back()->withErrors(['error' => 'Buku tidak ditemukan']);
+            return response()->json(['error' => 'Buku tidak ditemukan'], 404);
         }
 
-        // Menghitung total harga transaksi
+        // Cek jika stok cukup
+        if ($book->stock < $request->quantity) {
+            // Jika stok tidak cukup, kirimkan error
+            return redirect()->back()->with('error', 'Stok buku tidak cukup');
+        }
+
         $totalPrice = $book->price * $request->quantity;
 
-        // Validasi jika stok buku tidak cukup
-        if ($book->stock < $request->quantity) {
-            return redirect()->back()->withErrors(['error' => 'Stok tidak cukup']);
-        }
-
-        // Kurangi stok buku setelah penjualan
+        // Kurangi stok buku
         $book->stock -= $request->quantity;
         $book->save();
 
-        // Simpan data transaksi penjualan
+        // Simpan transaksi penjualan
         $sale = Sale::create([
             'user_id' => $request->user_id,
             'book_id' => $request->book_id,
@@ -58,73 +60,68 @@ class SaleController extends Controller
             'sales_date' => now(),
         ]);
 
-        // Redirect ke halaman daftar penjualan dengan pesan sukses
-        return redirect()->route('sales.index')->with('success', 'Penjualan berhasil disimpan.');
+        // Kembalikan response sukses
+        return redirect()->route('sales.index')->with('success', 'Penjualan berhasil');
     }
 
-    // Menampilkan halaman untuk mengedit transaksi penjualan
     public function edit($id)
     {
-        // Ambil data transaksi penjualan berdasarkan ID dan eager load relasi
-        $sale = Sale::with(['user', 'book.category'])->findOrFail($id);
-
-        // Menampilkan form edit dengan data transaksi yang akan diubah
-        return view('sales.edit', compact('sale'));
+        $sale = Sale::findOrFail($id);
+        $books = Book::all(); // Ambil semua buku
+        $users = User::all(); // Ambil semua user
+        return view('edit', compact('sale', 'books', 'users')); // Mengarah ke file edit.blade.php
     }
 
-    // Memperbarui transaksi penjualan
     public function update(Request $request, $id)
     {
         // Validasi input
         $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'book_id' => 'required|exists:books,id',
             'quantity' => 'required|integer|min:1',
         ]);
 
-        // Mengambil data transaksi yang akan diupdate
-        $sale = Sale::findOrFail($id);
-        $book = Book::findOrFail($request->book_id);
+        // Ambil data penjualan yang ingin diupdate
+        $sale = Sale::find($id);
 
-        // Menghitung total harga baru berdasarkan jumlah buku yang akan dibeli
-        $totalPrice = $book->price * $request->quantity;
-
-        // Validasi jika stok buku tidak cukup
-        if ($book->stock + $sale->quantity < $request->quantity) {
-            return redirect()->back()->withErrors(['error' => 'Stok tidak cukup untuk melakukan pembaruan']);
+        if (!$sale) {
+            return redirect()->route('sales.index')->with('error', 'Transaksi penjualan tidak ditemukan');
         }
 
-        // Mengupdate stok buku setelah transaksi diperbarui
+        // Ambil data buku terkait dengan penjualan ini
+        $book = $sale->book;
+
+        // Hitung selisih antara jumlah yang baru dengan jumlah yang lama
+        $quantityDifference = $request->quantity - $sale->quantity;
+
+        // Pengecekan apakah stok buku cukup
+        if ($book->stock < $quantityDifference) {
+            // Jika stok tidak cukup, kembalikan ke halaman edit dengan pesan error
+            return redirect()->back()->withErrors(['quantity' => 'Stok buku tidak cukup untuk jumlah yang diupdate.'])->withInput();
+        }
+
+        // Update stok buku (tambahkan jumlah yang sudah kembali, kurangi jumlah yang baru)
         $book->stock = $book->stock + $sale->quantity - $request->quantity;
         $book->save();
 
-        // Perbarui transaksi penjualan
-        $sale->update([
-            'user_id' => $request->user_id,
-            'book_id' => $request->book_id,
-            'quantity' => $request->quantity,
-            'total_price' => $totalPrice,
-        ]);
+        // Update transaksi penjualan
+        $sale->quantity = $request->quantity;
+        $sale->total_price = $book->price * $request->quantity;
+        $sale->save();
 
-        // Redirect ke halaman daftar penjualan dengan pesan sukses
-        return redirect()->route('sales.index')->with('success', 'Transaksi berhasil diperbarui.');
+        // Redirect ke halaman index dengan pesan sukses
+        return redirect()->route('sales.index')->with('success', 'Penjualan berhasil diperbarui');
     }
 
-    // Menghapus transaksi penjualan
+
+
     public function destroy($id)
     {
-        // Mengambil data transaksi berdasarkan ID
         $sale = Sale::findOrFail($id);
-
-        // Mengembalikan stok buku sesuai dengan jumlah yang terjual
-        $book = $sale->book;
-        $book->stock += $sale->quantity;
+        $book = Book::find($sale->book_id);
+        $book->stock += $sale->quantity; // Mengembalikan stok buku yang terjual
         $book->save();
 
-        // Menghapus data transaksi penjualan
         $sale->delete();
 
-        // Redirect ke halaman daftar penjualan dengan pesan sukses
-        return redirect()->route('sales.index')->with('success', 'Transaksi berhasil dihapus.');
+        return redirect()->route('sales.index')->with('success', 'Penjualan berhasil dihapus');
     }
 }
