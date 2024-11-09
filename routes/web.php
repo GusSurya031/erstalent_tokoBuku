@@ -6,6 +6,7 @@ use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\SaleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,3 +27,5 @@ Route::middleware(['auth', 'role:admin'])->group(function(){
 
 Route::resource('categories', CategoryController::class);
 Route::resource('books', BookController::class);
+
+Route::resource('sales', SaleController::class);

@@ -25,4 +25,8 @@ class Book extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+    public function books()
+    {
+        return $this->hasMany(Sale::class);
+    }
 }
