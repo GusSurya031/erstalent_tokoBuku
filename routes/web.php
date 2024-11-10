@@ -20,7 +20,7 @@ Route::middleware(['guest'])->group(function(){
     Route::post('/login', [AuthenticateController::class, 'store'])->name('login.store');
 });
 
-Route::middleware(['auth', 'role:admin'])->group(function() {
+Route::middleware(['auth', 'role:admin'])->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/product', [DashboardController::class, 'show'])->name('dashboard.show');
 });
@@ -30,7 +30,6 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/add-to-cart/{book}', [CartController::class, 'addToCart'])->name('cart.store');
     Route::delete('/delete/{cartItem}', [CartController::class, 'destroy'])->name('cart.destroy');
     Route::post('/logout', [AuthenticateController::class, 'logout'])->name('dashboard.logout');
-
     Route::post('/checkout/{book}', [SaleController::class,'buyNow'])->name('sale.buyNow');
     Route::post('/checkout', [SaleController::class,'buyCart'])->name('sale.buyCart');
 
