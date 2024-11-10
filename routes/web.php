@@ -20,7 +20,7 @@ Route::middleware(['guest'])->group(function(){
     Route::post('/login', [AuthenticateController::class, 'store'])->name('login.store');
 });
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/product', [DashboardController::class, 'show'])->name('dashboard.show');
 });
@@ -41,10 +41,6 @@ Route::middleware(['auth'])->group(function(){
 
 Route::get('book/detail/{id}', function ($id) {
     return view('book/detail', ['id' => $id]);
-});
-
-Route::get('cart', function () {
-    return view('cart/cart');
 });
 
 Route::resource('categories', CategoryController::class);
