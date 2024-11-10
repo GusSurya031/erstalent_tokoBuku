@@ -10,9 +10,9 @@ return new class extends Migration {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->string('title', 200);
-            $table->string('author', 100);
-            $table->string('publisher', 100);
+            $table->string('title',);
+            $table->string('author',);
+            $table->string('publisher',);
             $table->text('summary');
             $table->decimal('price', 10, 2);
             $table->unsignedInteger('stock');
