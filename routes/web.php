@@ -39,3 +39,15 @@ Route::resource('categories', CategoryController::class);
 Route::resource('books', BookController::class);
 
 Route::resource('sales', SaleController::class);
+
+Route::get('/dashboard', function () {
+    return view('dashboard/dashboard');
+});
+
+Route::get('/dashboard/customers', function () {
+    return view('dashboard/customer');
+});
+
+Route::get('/dashboard/transaction', function () {
+    return view('dashboard/transaction');
+});
