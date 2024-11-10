@@ -2,7 +2,7 @@
 
 @section('container')
     <div class="flex">
-        <div class="w-1/5">
+        <div class="w-1/6">
             @include('components.sidebar')
         </div>
 
@@ -30,24 +30,14 @@
                                             </svg>
                                         </label>
                                         <div class="dropdown-menu dropdown-menu-bottom-right">
-                                            <a class="dropdown-item text-sm border-none">Book Title</a>
-                                            <a tabindex="-1" class="dropdown-item text-sm border-none">Category</a>
+                                            <a class="dropdown-item text-sm border-none">ID</a>
+                                            <a tabindex="-1" class="dropdown-item text-sm border-none">Book ID</a>
                                             <a tabindex="-1" class="dropdown-item text-sm border-none">Stock</a>
-                                            <a tabindex="-1" class="dropdown-item text-sm border-none">Price</a>
+                                            <a tabindex="-1" class="dropdown-item text-sm border-none">Transaction
+                                                Date</a>
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn flex gap-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round"
-                                         class="opacity-75 border-none lucide lucide-square-plus">
-                                        <rect width="18" height="18" x="3" y="3" rx="2"/>
-                                        <path d="M8 12h8"/>
-                                        <path d="M12 8v8"/>
-                                    </svg>
-                                    Add Book
-                                </button>
                             </div>
 
                         </th>

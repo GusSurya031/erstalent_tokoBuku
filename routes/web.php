@@ -19,12 +19,13 @@ Route::get('/login', [AuthenticateController::class, 'index'])->name('login');
 Route::post('/login', [AuthenticateController::class, 'store'])->name('login.store');
 
 
-Route::middleware(['auth', 'role:admin'])->group(function(){
+Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/product', [DashboardController::class, 'show'])->name('dashboard.show');
     Route::post('/logout', [AuthenticateController::class, 'logout'])->name('dashboard.logout');
-Route::get('/book', function () {
-    return view('book/book');
+    Route::get('/book', function () {
+        return view('book/book');
+    });
 });
 
 Route::get('book/detail/{id}', function ($id) {

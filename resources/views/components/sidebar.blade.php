@@ -64,13 +64,13 @@
                 <div class="divider my-0"></div>
                 <div class="dropdown z-50 flex h-fit w-full cursor-pointer hover:bg-gray-4">
                     <label class="whites mx-2 flex h-fit w-full cursor-pointer p-0 hover:bg-gray-4" tabindex="0">
-                        <div class="flex flex-row gap-4 p-4">
+                        <div class="flex items-center flex-row gap-4 p-4">
                             <div class="avatar-square avatar avatar-md">
                                 <img src="https://i.pravatar.cc/150?img=30" alt="avatar"/>
                             </div>
-
                             <div class="flex flex-col">
-                                <span>Sandra Marx</span>
+                                <span class="font-bold">Jhon Doe</span>
+                                <span class="text-sm">Admin</span>
                             </div>
                         </div>
                     </label>
