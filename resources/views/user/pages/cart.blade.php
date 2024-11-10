@@ -9,7 +9,9 @@
         }
     </style>
     <x-navbar />
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="min-h-[50vh] max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+        
+
         <!-- Bagian Daftar Keranjang -->
         <div class="col-span-2 bg-white p-6 rounded-lg shadow-md">
             <h2 class="text-2xl font-bold mb-4">Keranjang</h2>
@@ -76,6 +78,39 @@
             </form>
         </div>
     </div>
+    <section class="min-h-screen flex flex-col items-center">
+        <h1 class="text-4xl font-bold text-center mb-8">Book Recomendation</h1>
+        <p class="text-center text-lg mb-8 max-w-3xl mx-auto text-gray-500">
+            Find books that not only fill your free time, but also touch your heart and inspire you. From captivating
+            stories to enriching knowledge.
+        </p>
+        <div class="container mx-auto grid grid-cols-1 place-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8">
+            {{-- {{dd($books)}} --}}
+            @foreach ($books as $book)
+            <div class="card transition-all bg-slate-100 shadow-sm border border-slate-200 hover:shadow-md card-image-cover cursor-pointer">
+                <a href="{{route('books.show',$book->id)}}">
+                    <div class="card-body">
+                        <img
+                            src="{{$book->image_url}}"
+                            class="w-[300px] h-[400px]"
+                            alt=""/>
+                        <div class="card-title-group px-10 flex flex-col gap-2">
+                            <h6 class="card-title text-2xl font-bold">{{$book->title}}</h6>
+                            <p class="card-text text-gray-500">{{$book->author}}</p>
+                            <div class="card-price font-bold text-gray-500 flex gap-3">
+                                <p class="card-text text-gray-500">Rp. {{$book->price}}</p>
+                                <p class="card-text text-gray-500 line-through">Rp 150.000</p>
+                            </div>
+                            <button class="btn btn-solid-primary">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endforeach
+        </div>
+    </section>
 
     <script>
         // Mengaktifkan atau menonaktifkan tombol Checkout berdasarkan item yang dicentang

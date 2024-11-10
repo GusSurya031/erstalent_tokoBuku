@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->integer('quantity');
             $table->decimal('total_price', 10, 2);
             $table->timestamp('sales_date');
+            $table->softDeletes('deleted_at', 0);
             $table->timestamps();
         });
     }

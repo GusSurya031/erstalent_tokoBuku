@@ -28,7 +28,7 @@ class AuthenticateController extends Controller
         if (Auth::attempt($validated)) {
             $request->session()->regenerate();
 
-            if(Auth::user()->roles->role_name =='admin') {
+            if(Auth::user()->roles->role_name =='ADMIN') {
                 return redirect()->intended('dashboard');
             } else {
                 return redirect()->intended('/');

@@ -17,8 +17,8 @@
                                 <img src="https://i.pravatar.cc/150?u=a042581f4e29026024d" alt="avatar" />
                             </label>
                             <div class="dropdown-menu dropdown-menu-bottom-left">
-                                <a class="dropdown-item text-sm">Profile</a>
-                                <a tabindex="-1" class="dropdown-item text-sm">Account settings</a>
+                                <a class="dropdown-item text-sm" href="{{route('books.index')}}">Books</a>
+                                <a tabindex="-1" class="dropdown-item text-sm" href="{{route('cart.view')}}">Cart</a>
                                 <a tabindex="-1" class="dropdown-item text-sm">
                                     <form action="{{ route('dashboard.logout') }}" method="post">
                                         @csrf

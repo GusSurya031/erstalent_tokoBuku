@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('gender', ['L', 'P']);
             $table->foreignId('role_id')->constrained();
             $table->rememberToken();
+            $table->softDeletes('deleted_at', 0);
             $table->timestamps();
         });
 

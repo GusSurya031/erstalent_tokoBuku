@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->decimal('price', 10, 2);
             $table->text('image_url')->nullable();
             $table->unsignedInteger('stock');
+            $table->softDeletes('deleted_at', 0);
             $table->timestamps();
         });
     }

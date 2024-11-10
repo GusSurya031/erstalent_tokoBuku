@@ -12,7 +12,7 @@
                     <section class="menu-section px-4">
                         <span class="menu-title">Main menu</span>
                         <div class="menu-items">
-                            <a href="/dashboard" class="menu-item">
+                            <a href="{{route('dashboard.index')}}" class="menu-item">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round" class="lucide lucide-layout-dashboard opacity-75">
@@ -24,7 +24,7 @@
                                 <span>Dashboard</span>
                             </a>
 
-                            <a href="/dashboard/customers" class="menu-item">
+                            <a href="{{route('customer.index')}}" class="menu-item">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="opacity-75" width="22" height="22"
                                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                      stroke-linecap="round" stroke-linejoin="round">
@@ -36,7 +36,7 @@
                                 </svg>
                                 Customers
                             </a>
-                            <a href="/dashboard/transaction" class="menu-item">
+                            <a href="{{route('dashboard.viewTransaction')}}" class="menu-item">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round" class="lucide lucide-shopping-cart opacity-75">
@@ -54,7 +54,10 @@
 						<ul class="menu-items">
 							<li class="menu-item">
 								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out opacity-75"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
-								Log Out
+								<form action="{{route('dashboard.logout')}}" method="post">
+                                    @csrf
+                                    <button type="submit">Logout</button>
+                                </form>
 							</li>
                         </ul>
                     </section>

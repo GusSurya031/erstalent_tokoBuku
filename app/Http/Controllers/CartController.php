@@ -31,6 +31,8 @@ class CartController extends Controller
     public function viewCart()
     {
         // Dapatkan user yang sedang login
+        $books = Book::all();
+        // dd($books);
         $user = Auth::user();
 
         // Dapatkan keranjang
@@ -42,7 +44,7 @@ class CartController extends Controller
             return view('user.pages.cart', ['cartItems' => []])->with('message', 'Keranjang Anda kosong.');
         }
 
-        return view('user.pages.cart', ['cartItems' => $cart->items]);
+        return view('user.pages.cart', ['books' => $books,'cartItems' => $cart->items]);
     }
 
     public function destroy(CartItem $cartItem)
