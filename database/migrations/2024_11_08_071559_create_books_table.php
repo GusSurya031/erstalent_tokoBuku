@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('publisher',);
             $table->text('summary');
             $table->decimal('price', 10, 2);
+            $table->text('image_url')->nullable();
             $table->unsignedInteger('stock');
             $table->timestamps();
         });

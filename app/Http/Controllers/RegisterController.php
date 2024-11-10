@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 class RegisterController extends Controller
 {
     public function index() {
-        return view('pages.register');
+        return view('user.auth.register');
     }
 
     public function store(Request $request){
@@ -19,7 +19,7 @@ class RegisterController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|min:4|max:255',
-            'email' => 'required|email:dns|max:255',
+            'email' => 'required|email:dns|max:255|unique:users,email',
             'password' => 'required|min:5',
             'phone_number' => 'required|string|max:13|regex:/^([0-9\s\-\+\(\)]*)$/',
             'gender' => ['required', Rule::in(['L', 'P'])],
@@ -30,6 +30,7 @@ class RegisterController extends Controller
             'email.required' => 'Email harus diisi',
             'email.email' => 'Domain Email Tidak Valid',
             'email.max' => 'Email tidak boleh lebih dari 255 karakter',
+            'email.unique' => 'Email sudah terdaftar, gunakan email yang lain',
             'password.required' => 'Password harus diisi.',
             'password.min' => 'Password harus memiliki minimal 5 karakter.',
             'phone_number.required' => 'Nomor Telepon harus diisi',
@@ -49,6 +50,6 @@ class RegisterController extends Controller
             'role_id' => $roles_user
         ]);
 
-        return redirect('/');
+        return redirect()->route('login')->with('success', 'Registered Successfuly');
     }
 }

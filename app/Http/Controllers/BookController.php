@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
     public function index()
     {
         $books = Book::with('category')->get();
-        return view('books.index', compact('books'));
+        return view('user.pages.book', compact('books'));
     }
 
     public function create()
@@ -22,6 +23,29 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->file('image'));
+
+        if ($request->hasFile('image')) {
+            $validatedData = $request->validate([
+                'image' => 'required|mimes:jpeg,png,jpg|max:1024', // Validasi file harus JPEG, PNG, atau JPG, dengan maksimal ukuran 1MB (1024 KB)
+            ], [
+                'image.required' => 'Tolong lampirkan file anda.',
+                'image.mimes' => 'Jenis file yang anda lampirkan tidak diterima. Tolong lampirkan file dengan format yang sesuai (jpeg, png, jpg).',
+                'image.max' => 'Ukuran file tidak boleh lebih dari 1MB.',
+            ]);
+
+            $image = $request->file('image');
+
+            // Generate nama unik untuk file
+            $filename = time() . '_' . $image->getClientOriginalName();
+
+            // Simpan file ke direktori yang sesuai
+            $path = $image->storeAs('public/book-cover', $filename);
+
+            // Update URL gambar di user model
+            $image_url = Storage::url($path);
+        }
+
         $request->validate([
             'category_id' => 'required|exists:categories,id',
             'title' => 'required|max:200',
@@ -32,13 +56,23 @@ class BookController extends Controller
             'stock' => 'required|integer'
         ]);
 
-        Book::create($request->all());
+        Book::create([
+            'category_id' => $request->category_id,
+            'title' => $request->title,
+            'author' => $request->author,
+            'publisher' => $request->publisher,
+            'summary' => $request->summary,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'image_url' => $image_url,
+        ]);
         return redirect()->route('books.index')->with('success', 'Book created successfully.');
     }
 
     public function show(Book $book)
     {
-        return view('books.show', compact('book'));
+        $book = Book::find($book->id);
+        return view('user.pages.bookShow', compact('book'));
     }
 
     public function edit(Book $book)

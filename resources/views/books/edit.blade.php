@@ -29,6 +29,7 @@
                 </option>
             @endforeach
         </select>
+        <img src="{{$book->image_url}}" alt="{{$book->title}}" width="100px">
         <button type="submit">Update</button>
     </form>
 </body>

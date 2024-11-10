@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Role;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -33,6 +34,13 @@ class DatabaseSeeder extends Seeder
             'role_id' => 2,
         ]);
 
+        Category::create([
+            'category_name' => 'Action'
+        ]);
+
+        Category::create([
+            'category_name' => 'Comedy'
+        ]);
 
     }
 }

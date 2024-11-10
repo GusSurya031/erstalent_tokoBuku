@@ -11,9 +11,8 @@
                 mood and need.
             </p>
             <button class="btn">
-                <a href="/book">Explore Books</a>
+                <a href="{{route('books.index')}}">Explore Books</a>
             </button>
-            <button class="btn">Learn More</button>
         </div>
     </section>
 @endsection

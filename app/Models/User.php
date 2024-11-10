@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -53,7 +54,14 @@ class User extends Authenticatable
         return $this->hasMany(Sale::class);
     }
 
-    public function roles() {
+    public function roles()
+    {
         return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    // Relasi one-to-one dengan Cart
+    public function cart(): HasOne
+    {
+        return $this->hasOne(Cart::class);
     }
 }

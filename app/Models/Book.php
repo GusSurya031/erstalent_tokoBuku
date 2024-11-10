@@ -29,4 +29,11 @@ class Book extends Model
     {
         return $this->hasMany(Sale::class);
     }
+
+    // Fungsi untuk mengurangi stok
+    public function decreaseStock($quantity)
+    {
+        $this->stock -= $quantity;
+        $this->save();
+    }
 }
