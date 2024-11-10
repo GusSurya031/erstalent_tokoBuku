@@ -34,14 +34,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/checkout', [SaleController::class, 'buyCart'])->name('sale.buyCart');
 });
 
-Route::get('/book', function () {
-    return view('book/book');
-});
-
-Route::get('book/detail/{id}', function ($id) {
-    return view('book/detail', ['id' => $id]);
-});
-
 Route::resource('categories', CategoryController::class);
 Route::resource('books', BookController::class);
 Route::resource('sales', SaleController::class);
@@ -56,4 +48,12 @@ Route::get('/dashboard/customers', function () {
 
 Route::get('/dashboard/transaction', function () {
     return view('dashboard/transaction');
+});
+
+Route::get('/book', function () {
+    return view('book/book');
+});
+
+Route::get('book/detail/{id}', function ($id) {
+    return view('book/detail', ['id' => $id]);
 });
