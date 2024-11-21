@@ -3,10 +3,10 @@
         <div class="navbar-start">
             <a href="/" class="navbar-item text-2xl font-bold">BookStore.</a>
         </div>
-        <div class="navbar-center hidden lg:flex space-x-4">
+        {{-- <div class="navbar-center hidden lg:flex space-x-4">
             <input type="text" class="input" placeholder="Search for books ...">
             <button class="btn">Search</button>
-        </div>
+        </div> --}}
 
         @if (Auth::check() && Auth::user()->roles->role_name == 'USER')
             <div class="navbar-end">

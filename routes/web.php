@@ -13,12 +13,15 @@ use App\Http\Controllers\SaleController;
 Route::get('/', function () {
     return view('user.welcome');
 })->name('home');
+Route::get('/books', [BookController::class, 'index'])->name('books.index');
+Route::get('books/{book}', [BookController::class, 'show'])->name('books.show');
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/register', [RegisterController::class, 'index'])->name('register.index');
     Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
     Route::get('/login', [AuthenticateController::class, 'index'])->name('login');
     Route::post('/login', [AuthenticateController::class, 'store'])->name('login.store');
+
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -32,6 +35,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('books/{book}', [BookController::class, 'update'])->name('books.update');
     Route::delete('books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
     Route::resource('sales', SaleController::class);
+    Route::post('/books', [BookController::class, 'store'])->name('books.store');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -42,9 +46,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/checkout/{book}', [SaleController::class, 'buyNow'])->name('sale.buyNow');
     Route::post('/checkout', [SaleController::class, 'buyCart'])->name('sale.buyCart');
     // Route::resource('books', BookController::class);
-    Route::get('/books', [BookController::class, 'index'])->name('books.index');
-    Route::post('/books', [BookController::class, 'store'])->name('books.store');
-    Route::get('books/{book}', [BookController::class, 'show'])->name('books.show');
+
 });
 
 

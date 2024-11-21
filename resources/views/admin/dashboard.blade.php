@@ -7,6 +7,12 @@
             border-bottom-width: 0px;
             border-top-width: 0px;
         }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            /* margin: 0; */
+        }
     </style>
     <div class="flex">
         <div class="w-1/5">
